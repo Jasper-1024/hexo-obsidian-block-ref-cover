@@ -1,6 +1,6 @@
 {
   "name": "hexo-obsidian-block-ref-cover",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A Hexo plugin to convert Obsidian block references into permalinks for Hexo blogs",
   "main": "index.js",
   "scripts": {
