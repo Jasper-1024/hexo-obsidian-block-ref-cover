@@ -44,6 +44,10 @@ function replaceRef(post) {
       fileName = p1 ? decodeURI(p1) : post.source.match(/[^/]*$/)[0].replace(/\.md$/, '');
       title = p2 ? decodeURI(p2) : null; // p2 is the title
       linkText = p3 ? decodeURI(p3) : fileName + (title ? `#${title}` : ''); // p3 is the link text
+
+      if (title) {
+        title = title.toLowerCase().replace(/ /g, '-');
+      }
     } catch (e) {
       log.error("hexo-obsidian-block-ref-cover: Invalid URI ", p1);
       return `<a href="#">Invalid link</a>`; // Return a default link if URI is invalid
