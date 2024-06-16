@@ -1,19 +1,26 @@
 {
-  "name": "hexo-filter-titlebased-link",
-  "version": "0.1.1",
-  "description": "Transfer wiki links (based on the title) in Markdown files to permalink.",
+  "name": "hexo-obsidian-block-ref-cover",
+  "version": "0.1.0",
+  "description": "A Hexo plugin to convert Obsidian block references into permalinks for Hexo blogs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [
     "hexo",
-    "filter",
     "link",
     "obsidian",
     "wiki",
-    "title-based"
+    "block-ref"
   ],
-  "author": "wuanqin",
-  "license": "MIT"
+  "author": "Jasper Hale",
+  "license": "MIT",
+  "dependencies": {
+    "hexo-log": "^1.0.0",
+    "hexo": "^5.0.0"
+  },
+  "devDependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0"
+  }
 }
