@@ -1,59 +1,82 @@
-# hexo-filter-titlebased-link
+# hexo-obsidian-block-ref-cover
 
-Transfer wiki links (based on the title) in Markdown files to permalink.
+A Hexo plugin to convert Obsidian block references into permalinks for Hexo blogs.
 
-将基于标题的双向链接转换为 Hexo 设定的永久链接。
+基于 Hexo 的 permalinks, 将 Obsidian 的块引用语法转为 Hexo 链接.
 
-This plugin makes you easy to use wiki links (its form may be `[[Title]]` or `[[Title|Alias]]`) in Hexo.
-It would be more useful when you use [Obsidian](https://obsidian.md/) to manage your blogs.
+This module allows you to easily use the block reference syntax of Obsidian to render Hexo.
 
-> [!NOTE]
-> - Make sure that no more than one vertical bar (`|`) in a wiki link.
-> - If one vertical bar included, `Alias` should not be empty.
-> - In addition, the title of all your articles should be unique.
+这个模块可以让你轻松使用 hexo 渲染 Obsidian 的块引用语法.
 
+- `[[file]]` `[[file|text]]`
+- `[[file#title]]` `[[file#title|text]]`
+- `[[file#^id]]` `[[file#^id|text]]`
+- `[[#title]]` `[[#title|text]]`
+- `[[#^id]]` `[[#^id|text]]`
+ 
 ## Installation
 
 ```markdown
-npm install hexo-filter-titlebased-link --save
+npm install hexo-obsidian-block-ref-cover --save
 ```
 
 ## Usage
 
-Hexo sets every post a [Permalinks](https://hexo.io/docs/permalinks.html), which can be configured in the `_config.yml`.
+You need config permalinks in `_config.yml`.
 
-Here is an example:
+需在 `_config.yml` 中配置 permalinks.
 
 ```yaml
 # in _config.yml
 permalink: p/:year/:month/:day/:hour/:minute/:second/
+
+# or with hexo-abbrlink
+permalink: :author/:abbrlink/    
+permalink_defaults:
+  author: jasper
+abbrlink:
+  alg: crc32  # crc16(default) and crc32
+  rep: hex    # dec(default) and hex
+pretty_urls:
+  trailing_index: true 
+  trailing_html: true 
 ```
 
-Assume that you have a post named `my_post_1` whose permalink is `p/2024/04/12/14/18/50/`. 
-In another post named `my_post_2`, you wrote a wiki link to `my_post_1`:
+## More Details
 
-```markdown
-This is my_post_2, 
+Obsidian block reference syntax can be divided into the following types:
 
-you can see my last post by clicking this link: [[my_post_1]],
+Obsidian 块引用语法可以分为下面几种:
 
-or [[my_post_1|this link]].
-```
+- `[[file]]` `[[file|text]]`
+- `[[file#title]]` `[[file#title|text]]`
+- `[[file#^id]]` `[[file#^id|text]]`
+- `[[#title]]` `[[#title|text]]`
+- `[[#^id]]` `[[#^id|text]]`
 
-After rendering by Hexo, the result html file of `my_post_2.md` will be:
+When converting to Hexo links, `file` will be replaced by permalinks; and `title` will be replaced by `#title` in the url.
 
-```html
-<p>This is my_post_2, </p>
-<p>you can see my last post by clicking this link: <a href="/p/2024/04/12/14/18/50/">my_post_1</a>,</p>
-<p>or <a href="/p/2024/04/12/14/18/50/">this link</a>.</p>
-```
+在转换为 Hexo 链接时, `file` 会被替换为 permalinks; 而 `title` 在 url 中会替换为 `#title`.
+
+The most troublesome thing is the processing of `^id`. Here, the entire `^id` is replaced with a span tag at the original text, so that `#^id` can be treated as a normal title.
+
+比较麻烦的是 `^id` 的处理, 这里在原文处将 `^id` 整个替换为了 span 标签,这样就能将 `#^id` 当作普通 title 处理了.
+
+There is also a special case where the reference is to this article, which leads to no `file` field, and the file name of this file is obtained through `post.source`, and other processing is the same.
+
+还有一种特殊情况是引用本文,导致没有 `file` 字段,通过 `post.source` 取到本文件的文件名, 其他处理流程相同.
+
+## Thanks
+
+This module is forked from [hexo-filter-titlebased-link](https://www.npmjs.com/package/hexo-filter-titlebased-link), thanks to the original author.
+
+本模块 fork 自 [hexo-filter-titlebased-link](https://www.npmjs.com/package/hexo-filter-titlebased-link),感谢原作者.
 
 ## Related Hexo Plugins
 
+- [hexo-filter-titlebased-link](https://www.npmjs.com/package/hexo-filter-titlebased-link)
 - [hexo-filter-link-post](https://github.com/tcatche/hexo-filter-link-post): Transfer relative post link in markdown file to post link. 
-将文件里的通过相对路径引用的 markdown 文件转为对应的文章的链接。
 - [hexo-abbrlink](https://github.com/Rozbo/hexo-abbrlink): Create one and only link for every post for hexo. 
-为每一篇 Hexo 文章创建独一无二的永久链接。
 
 ## License
 
