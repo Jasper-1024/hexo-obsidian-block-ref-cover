@@ -26,7 +26,7 @@ function replaceLinkId(data) {
   const re = /\^(\w+)$/gm;
   data.content = data.content.replace(re, (match, marker) => {
     const uniqueId = "^" + marker;
-    log.info("hexo-filter-titlebased-link: Replace ID", marker);
+    log.info("hexo-obsidian-block-ref-cover: Replace ID ", marker);
     return `<span id="${uniqueId}" style="font-size: smaller; color: gray; vertical-align: top; opacity: 0.75;">${match}</span>`;
   });
     
@@ -45,19 +45,19 @@ function replaceRef(post) {
       title = p2 ? decodeURI(p2) : null; // p2 is the title
       linkText = p3 ? decodeURI(p3) : fileName + (title ? `#${title}` : ''); // p3 is the link text
     } catch (e) {
-      log.error("hexo-filter-titlebased-link: Invalid URI -", p1);
+      log.error("hexo-obsidian-block-ref-cover: Invalid URI ", p1);
       return `<a href="#">Invalid link</a>`; // Return a default link if URI is invalid
     }
 
     if (cachedPost[fileName]) {
-      log.info("hexo-filter-titlebased-link: Replace -", fileName);
+      log.info("hexo-obsidian-block-ref-cover: Replace ", fileName);
       let href = `/${cachedPost[fileName]}`;
       if (title) {
         href += `#${title}`;
       }
       return `<a href="${href}">${linkText}</a>`;
     } else {
-      log.warn("hexo-filter-titlebased-link: No cached permalink for -", fileName);
+      log.warn("hexo-obsidian-block-ref-cover: No cached permalink for ", fileName);
     }
 
     return match;
